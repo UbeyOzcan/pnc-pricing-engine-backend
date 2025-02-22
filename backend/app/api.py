@@ -22,7 +22,7 @@ class Gas(str, Enum):
 app = FastAPI()
 
 
-@app.get("/")
+@app.get("/motor")
 async def calculate(power: int,
                VehAge: int,
                DrivAge: int,
