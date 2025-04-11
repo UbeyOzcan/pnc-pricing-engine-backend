@@ -1,5 +1,5 @@
-from backend.src.ModelFactory import ModelFactory
-from backend.src.DataFactory import DataFactory
+from src.ModelFactory import ModelFactory
+from src.DataFactory import DataFactory
 
 
 def main():

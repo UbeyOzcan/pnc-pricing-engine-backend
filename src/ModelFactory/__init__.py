@@ -4,7 +4,7 @@ import numpy as np
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
 import joblib
-from backend.src.DataFactory import DataFactory
+from src.DataFactory import DataFactory
 
 DF = DataFactory()
 
