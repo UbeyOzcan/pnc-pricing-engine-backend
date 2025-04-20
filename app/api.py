@@ -26,7 +26,7 @@ app = FastAPI()
 async def calculate(power: int,
                VehAge: int,
                DrivAge: int,
-               BonusMalus: int,
+               #BonusMalus: int,
                VehGas: Gas,
                Area: Area):
     root = Path(__file__).parent.parent
@@ -36,7 +36,7 @@ async def calculate(power: int,
     single_profile = {'VehPower': [power],
                       'VehAge': [VehAge],
                       'DrivAge': [DrivAge],
-                      'BonusMalus': [BonusMalus],
+                      #'BonusMalus': [BonusMalus],
                       'VehGas': [VehGas.name],
                       'Area': [Area.name]}
     single_profile = pd.DataFrame.from_dict(single_profile)
