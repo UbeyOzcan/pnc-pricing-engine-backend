@@ -23,5 +23,5 @@ class NpEncoder(json.JSONEncoder):
             return obj.tolist()
         return super(NpEncoder, self).default(obj)
 
-with open('unique.json', 'w') as f:
+with open('../../pnc-pricing-engine-frontend/ressources/data/unique.json', 'w') as f:
     json.dump(unique, f, cls=NpEncoder)

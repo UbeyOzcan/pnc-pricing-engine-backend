@@ -3,7 +3,7 @@ from pathlib import Path
 import joblib
 import pandas as pd
 from fastapi import FastAPI
-
+from fastapi.middleware.cors import CORSMiddleware
 
 class Area(str, Enum):
     D = "D"
@@ -20,6 +20,15 @@ class Gas(str, Enum):
 
 
 app = FastAPI()
+
+# Set up CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
 
 
 @app.get("/motor")
