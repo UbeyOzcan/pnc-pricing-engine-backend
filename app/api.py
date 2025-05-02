@@ -5,6 +5,7 @@ import pandas as pd
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+
 class Area(str, Enum):
     D = "D"
     B = "B"
@@ -33,11 +34,11 @@ app.add_middleware(
 
 @app.get("/motor")
 async def calculate(power: int,
-               VehAge: int,
-               DrivAge: int,
-               #BonusMalus: int,
-               VehGas: Gas,
-               Area: Area):
+                    VehAge: int,
+                    DrivAge: int,
+                    # BonusMalus: int,
+                    VehGas: Gas,
+                    Area: Area):
     root = Path(__file__).parent.parent
     frequency = joblib.load(f'{root}/models/prod/Frequency.joblib')
     severity = joblib.load(f'{root}/models/prod/Severity.joblib')
@@ -45,7 +46,7 @@ async def calculate(power: int,
     single_profile = {'VehPower': [power],
                       'VehAge': [VehAge],
                       'DrivAge': [DrivAge],
-                      #'BonusMalus': [BonusMalus],
+                      # 'BonusMalus': [BonusMalus],
                       'VehGas': [VehGas.name],
                       'Area': [Area.name]}
     single_profile = pd.DataFrame.from_dict(single_profile)
@@ -58,3 +59,5 @@ async def calculate(power: int,
     single_profile = single_profile.to_dict('list')
 
     return single_profile
+
+#TODO : Create a POST to send data into the policy database once the quote is accepted
