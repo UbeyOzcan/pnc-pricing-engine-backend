@@ -40,8 +40,8 @@ async def calculate(power: int,
                     VehGas: Gas,
                     Area: Area):
     root = Path(__file__).parent.parent
-    frequency = joblib.load(f'{root}/models/prod/Frequency.joblib')
-    severity = joblib.load(f'{root}/models/prod/Severity.joblib')
+    frequency = joblib.load(f'models/prod/Frequency.joblib')
+    severity = joblib.load(f'models/prod/Severity.joblib')
 
     single_profile = {'VehPower': [power],
                       'VehAge': [VehAge],
