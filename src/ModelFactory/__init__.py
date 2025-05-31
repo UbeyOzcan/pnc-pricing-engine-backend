@@ -5,6 +5,7 @@ import statsmodels.api as sm
 import statsmodels.formula.api as smf
 import joblib
 from src.DataFactory import DataFactory
+from statsmodels.iolib.smpickle import load_pickle
 
 DF = DataFactory()
 
@@ -23,7 +24,7 @@ class ModelFactory:
                               data=train,
                               offset=np.log(train['Exposure']),
                               family=sm.families.Poisson(link=sm.families.links.log())).fit()
-        joblib.dump(FreqPoisson, f'{DF.get_project_root()}/models/prod/Frequency.joblib')
+        FreqPoisson.save(f'{DF.get_project_root()}/models/prod/Frequency.pickle')
 
     def severity(self, expr: str):
         df = self.df[(self.df.ClaimNb > 0) & (self.df.ClaimNb < 5)]
@@ -36,14 +37,14 @@ class ModelFactory:
                            offset=train.ClaimNb,
                            family=sm.families.Gamma(link=sm.families.links.log())).fit()
 
-        joblib.dump(SevGamma, f'{DF.get_project_root()}/models/prod/Severity.joblib')
+        SevGamma.save(f'{DF.get_project_root()}/models/prod/Severity.pickle')
 
     def riskpremium(self, env: str, single_profile: dict):
         VALID_STATUS = {'prod', 'dev'}
         if env not in VALID_STATUS:
             raise ValueError("results: status must be one of %r." % VALID_STATUS)
-        frequency = joblib.load(f'{DF.get_project_root()}/models/{env}/Frequency.joblib')
-        severity = joblib.load(f'{DF.get_project_root()}/models/{env}/Severity.joblib')
+        frequency = load_pickle(f'{DF.get_project_root()}/models/{env}/Frequency.pickle')
+        severity = load_pickle(f'{DF.get_project_root()}/models/{env}/Severity.pickle')
 
         single_profile = pd.DataFrame.from_dict(single_profile)
         single_profile['expected_freq'] = round(frequency.predict(single_profile), 4)
