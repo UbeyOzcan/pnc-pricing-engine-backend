@@ -4,7 +4,7 @@ import joblib
 import pandas as pd
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
+from statsmodels.iolib.smpickle import load_pickle
 
 class Area(str, Enum):
     D = "D"
@@ -40,8 +40,8 @@ async def calculate(power: int,
                     VehGas: Gas,
                     Area: Area):
     root = Path(__file__).parent.parent
-    frequency = joblib.load(f'models/prod/Frequency.joblib')
-    severity = joblib.load(f'models/prod/Severity.joblib')
+    frequency = load_pickle(f'models/prod/Frequency.pickle')
+    severity = load_pickle(f'models/prod/Severity.pickle')
 
     single_profile = {'VehPower': [power],
                       'VehAge': [VehAge],
