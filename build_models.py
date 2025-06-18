@@ -4,8 +4,9 @@ from src.DataFactory import DataFactory
 
 def main():
     DF = DataFactory()
-    MF = ModelFactory(df=DF.getData()) # train model on 10k data just to make our life easier on deployment as this is a demo model =)
+    MF = ModelFactory(df=DF.getData().head(1000))
     MF.frequency(expr="ClaimNb ~  Area + VehGas + VehAge + DrivAge + VehBrand + BonusMalus + Density")
+    MF = ModelFactory(df=DF.getData())
     MF.severity(expr="ClaimAmount ~ Area + VehGas + VehAge + DrivAge + VehBrand + BonusMalus + Density")
     single_profile = {'VehPower': [50],
                       'VehAge': [0],
