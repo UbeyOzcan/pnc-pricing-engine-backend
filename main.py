@@ -64,7 +64,7 @@ async def calculate(power: int,
                       'VehGas': [VehGas.name],
                       'Area': [Area.name],
                       'Density': [Density],
-                      'VhBrand':[VhBrand.name]}
+                      'VehBrand':[VhBrand.name]}
 
     single_profile = pd.DataFrame.from_dict(single_profile)
     single_profile['Predicted Frequency'] = frequency.predict(single_profile)
