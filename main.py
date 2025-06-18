@@ -1,6 +1,5 @@
 from enum import Enum
 from pathlib import Path
-import joblib
 import pandas as pd
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -20,6 +19,19 @@ class Gas(str, Enum):
     Diesel = "Diesel"
 
 
+class VhBrand(str, Enum):
+    B1 = "B1"
+    B2 = "B2"
+    B3 = "B3"
+    B4 = "B4"
+    B5 = "B5"
+    B6 = "B6"
+    B10 = "B10"
+    B11 = "B11"
+    B12 = "B12"
+    B13 = "B13"
+    B14 = "B14"
+
 app = FastAPI()
 
 # Set up CORS
@@ -36,9 +48,11 @@ app.add_middleware(
 async def calculate(power: int,
                     VehAge: int,
                     DrivAge: int,
-                    # BonusMalus: int,
+                    BonusMalus: int,
                     VehGas: Gas,
-                    Area: Area):
+                    Area: Area,
+                    Density: float,
+                    VhBrand: VhBrand):
     root = Path(__file__).parent.parent
     frequency = load_pickle(f'models/prod/Frequency.pickle')
     severity = load_pickle(f'models/prod/Severity.pickle')
@@ -46,9 +60,12 @@ async def calculate(power: int,
     single_profile = {'VehPower': [power],
                       'VehAge': [VehAge],
                       'DrivAge': [DrivAge],
-                      # 'BonusMalus': [BonusMalus],
+                      'BonusMalus': [BonusMalus],
                       'VehGas': [VehGas.name],
-                      'Area': [Area.name]}
+                      'Area': [Area.name],
+                      'Density': [Density],
+                      'VhBrand':[VhBrand.name]}
+
     single_profile = pd.DataFrame.from_dict(single_profile)
     single_profile['Predicted Frequency'] = frequency.predict(single_profile)
     single_profile['Predicted Severity'] = severity.predict(single_profile)
@@ -59,5 +76,6 @@ async def calculate(power: int,
     single_profile = single_profile.to_dict('list')
 
     return single_profile
+
 
 #TODO : Create a POST to send data into the policy database once the quote is accepted
